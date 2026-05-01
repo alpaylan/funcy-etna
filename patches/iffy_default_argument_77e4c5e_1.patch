@@ -1,0 +1,13 @@
+diff --git a/funcy/funcs.py b/funcy/funcs.py
+index 0a235bb..f7b0ff3 100644
+--- a/funcy/funcs.py
++++ b/funcy/funcs.py
+@@ -95,7 +95,7 @@ def autocurry(func, n=EMPTY, _spec=None, _args=(), _kwargs={}):
+ def iffy(pred, action=EMPTY, default=identity):
+     """Creates a function, which conditionally applies action or default."""
+     if action is EMPTY:
+-        return iffy(bool, pred, default)
++        return iffy(bool, pred)
+     else:
+         pred = make_pred(pred)
+         action = make_func(action)

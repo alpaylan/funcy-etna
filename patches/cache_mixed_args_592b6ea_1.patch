@@ -1,0 +1,13 @@
+diff --git a/funcy/calc.py b/funcy/calc.py
+index 2966bdd..e074c17 100644
+--- a/funcy/calc.py
++++ b/funcy/calc.py
+@@ -52,7 +52,7 @@ def _memory_decorator(memory, key_func):
+                 return memory[key]
+             except KeyError:
+                 try:
+-                    value = memory[key] = func(*args, **kwargs)
++                    value = memory[key] = func(*key, **kwargs)
+                     return value
+                 except SkipMemory as e:
+                     return e.args[0] if e.args else None

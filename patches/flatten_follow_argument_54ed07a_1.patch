@@ -1,0 +1,13 @@
+diff --git a/funcy/seqs.py b/funcy/seqs.py
+index 760a18e..05711f5 100644
+--- a/funcy/seqs.py
++++ b/funcy/seqs.py
+@@ -183,7 +183,7 @@ def flatten(seq, follow=is_seqcont):
+        Unpacks an item if follow(item) is truthy."""
+     for item in seq:
+         if follow(item):
+-            yield from flatten(item, follow)
++            yield from flatten(item, is_seqcont)
+         else:
+             yield item
+ 

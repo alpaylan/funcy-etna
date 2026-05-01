@@ -1,0 +1,13 @@
+diff --git a/funcy/seqs.py b/funcy/seqs.py
+index 760a18e..11027bf 100644
+--- a/funcy/seqs.py
++++ b/funcy/seqs.py
+@@ -399,7 +399,7 @@ def lchunks(n, step, seq=EMPTY):
+ 
+ def partition_by(f, seq):
+     """Lazily partition seq into continuous chunks with constant value of f."""
+-    f = make_func(f)
++    f = make_pred(f)
+     for _, items in groupby(seq, f):
+         yield items
+ 

@@ -1,0 +1,217 @@
+name = "funcy"
+description = "A fancy and practical functional toolset for Python — bug fixes mined from upstream history."
+language = "python"
+crate = "funcy"
+base_commit = "9eb04473e31b6b60bd459e4dda24f6b1db5a3773"
+
+# ---------------------------------------------------------------------------
+# Variant: walk_values_defaultdict_factory_c245b04_1
+# ---------------------------------------------------------------------------
+[[tasks]]
+mutations = ["walk_values_defaultdict_factory_c245b04_1"]
+
+[tasks.source]
+repo = "https://github.com/Suor/funcy"
+commits = ["c245b042616a2a88c250884b318b06ea0113ca58"]
+commit_subjects = ["Fix walk_values() for defaultdicts with empty factory"]
+origin = "internal"
+summary = "``_factory(coll, mapper=f)`` for a ``defaultdict`` with no ``default_factory`` (i.e. ``defaultdict(None, ...)``) constructed ``compose(mapper, None)`` whenever a mapper was supplied. ``compose`` returns a function that calls ``None()`` on first invocation, raising ``TypeError: 'NoneType' object is not callable`` from ``walk_values``. The fix only composes when ``coll.default_factory`` is itself truthy."
+
+[tasks.injection]
+kind = "patch"
+files = ["funcy/colls.py"]
+locations = [{ file = "funcy/colls.py", line = 36, symbol = "_factory" }]
+patch = "patches/walk_values_defaultdict_factory_c245b04_1.patch"
+
+[tasks.bug]
+short_name = "walk_values_defaultdict_factory"
+invariant = "``walk_values(f, defaultdict(None, payload))`` returns a defaultdict whose mapping equals ``{k: f(v) for k, v in payload}``, without raising."
+how_triggered = "The mutation drops the ``and coll.default_factory`` guard, so ``compose(mapper, None)`` is built and ``walk_values`` raises ``TypeError`` when the resulting factory is invoked."
+
+[[tasks.tasks]]
+property = "WalkValuesDefaultdictFactory"
+witnesses = [
+  { test_fn = "witness_walk_values_defaultdict_factory_case_basic", note = "defaultdict(None, {1:10, 2:20}) — fix yields mapped values, bug TypeError" },
+]
+
+# ---------------------------------------------------------------------------
+# Variant: flatten_follow_argument_54ed07a_1
+# ---------------------------------------------------------------------------
+[[tasks]]
+mutations = ["flatten_follow_argument_54ed07a_1"]
+
+[tasks.source]
+repo = "https://github.com/Suor/funcy"
+commits = ["54ed07a6a52acad6f409a828f544c37ace003902"]
+commit_subjects = ["Fix bug with flatten() follow argument"]
+origin = "internal"
+summary = "``flatten(seq, follow=p)`` recursed with the default ``is_seqcont`` predicate instead of the user-supplied ``follow``. As a result, only the top-level was flattened with ``p``; deeper nestings were either over-unpacked (when ``p`` was narrower than ``is_seqcont``) or under-unpacked (when ``p`` accepted shapes ``is_seqcont`` rejects). The fix passes ``follow`` through every recursive call."
+
+[tasks.injection]
+kind = "patch"
+files = ["funcy/seqs.py"]
+locations = [{ file = "funcy/seqs.py", line = 186, symbol = "flatten" }]
+patch = "patches/flatten_follow_argument_54ed07a_1.patch"
+
+[tasks.bug]
+short_name = "flatten_follow_argument"
+invariant = "``flatten(nested, follow=is_list)`` fully unpacks an arbitrary-depth list-of-lists when ``is_list`` is the user-supplied predicate."
+how_triggered = "The mutation reverts the recursive call to ``flatten(item, is_seqcont)``. ``is_seqcont`` does not consider plain ``list`` instances as sequence containers in some intermediate branches when other follow predicates are used; with the bug, the user's predicate is honoured only at depth 1."
+
+[[tasks.tasks]]
+property = "FlattenFollowArgument"
+witnesses = [
+  { test_fn = "witness_flatten_follow_argument_case_nested", note = "[[[[1,2,3]]]] with follow=is_list — fix flattens to [1,2,3], bug returns one-level-deep list" },
+]
+
+# ---------------------------------------------------------------------------
+# Variant: iffy_default_argument_77e4c5e_1
+# ---------------------------------------------------------------------------
+[[tasks]]
+mutations = ["iffy_default_argument_77e4c5e_1"]
+
+[tasks.source]
+repo = "https://github.com/Suor/funcy"
+commits = ["77e4c5ee4f25fbcd760232e11da6df9f9a128322"]
+commit_subjects = ["Fix iffy() default argument"]
+prs = []
+origin = "internal"
+summary = "``iffy(pred, action=EMPTY, default=identity)`` recurses through the action-is-EMPTY branch as ``iffy(bool, pred)``, dropping any caller-supplied ``default`` and silently substituting ``identity``. The fix forwards ``default`` into the recursive call."
+
+[tasks.injection]
+kind = "patch"
+files = ["funcy/funcs.py"]
+locations = [{ file = "funcy/funcs.py", line = 98, symbol = "iffy" }]
+patch = "patches/iffy_default_argument_77e4c5e_1.patch"
+
+[tasks.bug]
+short_name = "iffy_default_argument"
+invariant = "``iffy(pred, default=k)(v)`` returns ``k`` when ``not pred(v)``."
+how_triggered = "The mutation drops the ``default`` argument from the recursive call, so the 1-arg form silently uses ``identity`` and the value passes through unchanged when it should fall back to ``k``."
+
+[[tasks.tasks]]
+property = "IffyDefaultArgument"
+witnesses = [
+  { test_fn = "witness_iffy_default_argument_case_falsy", note = "iffy(pred, default=99); 1-arg form means pred plays as action and default=99 must be returned for falsy v=0 — fix returns 99, bug returns identity(0)=0" },
+]
+
+# ---------------------------------------------------------------------------
+# Variant: empty_iterators_4a5e9df_1
+# ---------------------------------------------------------------------------
+[[tasks]]
+mutations = ["empty_iterators_4a5e9df_1"]
+
+[tasks.source]
+repo = "https://github.com/Suor/funcy"
+commits = ["4a5e9df9d65c1dc980a1aeb5f2e0f837eae689e4"]
+commit_subjects = ["Fix empty() on iterators"]
+origin = "internal"
+summary = "``empty(coll)`` for an iterator funnelled through ``_factory(coll)()`` which returned ``iter`` (the constructor) and then attempted ``iter()`` with no arguments — which raises ``TypeError: iter expected at least 1 argument``. The fix special-cases ``Iterator`` to return ``iter([])``."
+
+[tasks.injection]
+kind = "patch"
+files = ["funcy/colls.py"]
+locations = [{ file = "funcy/colls.py", line = 50, symbol = "empty" }]
+patch = "patches/empty_iterators_4a5e9df_1.patch"
+
+[tasks.bug]
+short_name = "empty_iterators"
+invariant = "``list(empty(iter(xs)))`` is ``[]`` and the call does not raise."
+how_triggered = "The mutation removes the iterator special case so ``empty(iter(xs))`` falls into ``_factory(coll)()`` which is ``iter()``, raising ``TypeError``."
+
+[[tasks.tasks]]
+property = "EmptyOnIterators"
+witnesses = [
+  { test_fn = "witness_empty_on_iterators_case_basic", note = "iter([1,2,3]) — fix returns iter([]), bug TypeError" },
+]
+
+# ---------------------------------------------------------------------------
+# Variant: partition_by_extended_mapper_7729f8d_1
+# ---------------------------------------------------------------------------
+[[tasks]]
+mutations = ["partition_by_extended_mapper_7729f8d_1"]
+
+[tasks.source]
+repo = "https://github.com/Suor/funcy"
+commits = ["7729f8da225742c3eb9c9ab5f939efa0e6e6aea6"]
+commit_subjects = ["Fix i?partition_by() for non-boolean extended mapper"]
+origin = "internal"
+summary = "``partition_by(f, seq)`` forced the key function through ``make_pred`` rather than ``make_func``. ``make_pred`` wraps the result in ``bool``, collapsing every distinct match value into ``True`` and every miss into ``False``. With a regex string mapper like ``\\d``, every digit collapses into one bucket instead of being grouped by the matched character."
+
+[tasks.injection]
+kind = "patch"
+files = ["funcy/seqs.py"]
+locations = [{ file = "funcy/seqs.py", line = 402, symbol = "partition_by" }]
+patch = "patches/partition_by_extended_mapper_7729f8d_1.patch"
+
+[tasks.bug]
+short_name = "partition_by_extended_mapper"
+invariant = "``lpartition_by('\\d', list(s))`` groups consecutive items by what the regex matches, distinguishing different match results — not by truthiness."
+how_triggered = "The mutation reverts to ``make_pred(f)``. The bool collapse erases distinctions between match values, so e.g. \"1211\" partitions into one chunk instead of three."
+
+[[tasks.tasks]]
+property = "PartitionByExtendedMapper"
+witnesses = [
+  { test_fn = "witness_partition_by_extended_mapper_case_basic", note = "regex \\d on mixed string — fix produces multiple chunks, bug collapses by truthiness" },
+]
+
+# ---------------------------------------------------------------------------
+# Variant: where_nonexistent_keys_e068b64_1
+# ---------------------------------------------------------------------------
+[[tasks]]
+mutations = ["where_nonexistent_keys_e068b64_1"]
+
+[tasks.source]
+repo = "https://github.com/Suor/funcy"
+commits = ["e068b64005b0f3c432311a7584b82d4e08420a67"]
+commit_subjects = ["Don't crash in where on nonexistent keys from conditions"]
+origin = "internal"
+summary = "``where(mappings, **cond)`` evaluated ``m[k] == v`` directly. If any mapping in ``mappings`` lacked a ``cond`` key, the call raised ``KeyError`` instead of treating the mapping as a non-match. The fix guards with ``k in m and m[k] == v``."
+
+[tasks.injection]
+kind = "patch"
+files = ["funcy/colls.py"]
+locations = [{ file = "funcy/colls.py", line = 360, symbol = "where" }]
+patch = "patches/where_nonexistent_keys_e068b64_1.patch"
+
+[tasks.bug]
+short_name = "where_nonexistent_keys"
+invariant = "``where(mappings, k=v)`` returns the mappings whose ``k`` equals ``v``; mappings lacking ``k`` are silently skipped, not surfaced as ``KeyError``."
+how_triggered = "The mutation drops the ``k in m`` guard from the lambda, so a mapping without one of the cond keys raises ``KeyError`` from inside ``filter``."
+
+[[tasks.tasks]]
+property = "WhereNonexistentKeys"
+witnesses = [
+  { test_fn = "witness_where_nonexistent_keys_case_missing", note = "mappings = [{}, {'a': 5}], where(..., a=5) — fix returns [{'a':5}], bug KeyError" },
+]
+
+# ---------------------------------------------------------------------------
+# Variant: cache_mixed_args_592b6ea_1
+# ---------------------------------------------------------------------------
+[[tasks]]
+mutations = ["cache_mixed_args_592b6ea_1"]
+
+[tasks.source]
+repo = "https://github.com/Suor/funcy"
+commits = ["592b6eaa3b004885ed0f4f1cbde81ffef3d91c87"]
+commit_subjects = ["Fix @cache with mixed positional and keywords args"]
+issues = [60]
+origin = "internal"
+summary = "On a cache miss with mixed positional and keyword arguments the wrapper called ``func(*key, **kwargs)`` where ``key = args + tuple(sorted(kwargs.items()))``. The unpacked ``key`` includes the keyword-pair tuples as positional arguments, doubling those values and corrupting the function call. The fix dispatches with ``func(*args, **kwargs)``."
+
+[tasks.injection]
+kind = "patch"
+files = ["funcy/calc.py"]
+locations = [{ file = "funcy/calc.py", line = 55, symbol = "_memory_decorator" }]
+patch = "patches/cache_mixed_args_592b6ea_1.patch"
+
+[tasks.bug]
+short_name = "cache_mixed_args"
+invariant = "Calling a ``@cache(timeout)``-wrapped function with mixed positional and keyword arguments returns the same result as calling the unwrapped function with the same arguments."
+how_triggered = "The mutation reverts the call to ``func(*key, **kwargs)``. With a positional + kwarg call, ``key`` includes the sorted ``(name, value)`` pair, so the wrapped function receives extra positional arguments and either raises ``TypeError`` or silently returns the wrong result."
+
+[[tasks.tasks]]
+property = "CacheMixedArgs"
+witnesses = [
+  { test_fn = "witness_cache_mixed_args_case_basic", note = "add(1, y=2) under @cache — fix returns 3, bug raises TypeError" },
+]
