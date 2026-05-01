@@ -1,6 +1,7 @@
 name = "funcy"
 description = "A fancy and practical functional toolset for Python — bug fixes mined from upstream history."
 language = "python"
+strategies = ["hypothesis", "crosshair"]
 crate = "funcy"
 base_commit = "9eb04473e31b6b60bd459e4dda24f6b1db5a3773"
 
