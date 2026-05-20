@@ -1,39 +1,25 @@
 # funcy — ETNA Tasks
 
-Total tasks: 28
+Total tasks: 14
 
 ## Task Index
 
 | Task | Variant | Framework | Property | Witness |
 |------|---------|-----------|----------|---------|
-| 001 | `cache_mixed_args_592b6ea_1` | proptest | `CacheMixedArgs` | `witness_cache_mixed_args_case_basic` |
-| 002 | `cache_mixed_args_592b6ea_1` | quickcheck | `CacheMixedArgs` | `witness_cache_mixed_args_case_basic` |
-| 003 | `cache_mixed_args_592b6ea_1` | crabcheck | `CacheMixedArgs` | `witness_cache_mixed_args_case_basic` |
-| 004 | `cache_mixed_args_592b6ea_1` | hegel | `CacheMixedArgs` | `witness_cache_mixed_args_case_basic` |
-| 005 | `empty_iterators_4a5e9df_1` | proptest | `EmptyOnIterators` | `witness_empty_on_iterators_case_basic` |
-| 006 | `empty_iterators_4a5e9df_1` | quickcheck | `EmptyOnIterators` | `witness_empty_on_iterators_case_basic` |
-| 007 | `empty_iterators_4a5e9df_1` | crabcheck | `EmptyOnIterators` | `witness_empty_on_iterators_case_basic` |
-| 008 | `empty_iterators_4a5e9df_1` | hegel | `EmptyOnIterators` | `witness_empty_on_iterators_case_basic` |
-| 009 | `flatten_follow_argument_54ed07a_1` | proptest | `FlattenFollowArgument` | `witness_flatten_follow_argument_case_nested` |
-| 010 | `flatten_follow_argument_54ed07a_1` | quickcheck | `FlattenFollowArgument` | `witness_flatten_follow_argument_case_nested` |
-| 011 | `flatten_follow_argument_54ed07a_1` | crabcheck | `FlattenFollowArgument` | `witness_flatten_follow_argument_case_nested` |
-| 012 | `flatten_follow_argument_54ed07a_1` | hegel | `FlattenFollowArgument` | `witness_flatten_follow_argument_case_nested` |
-| 013 | `iffy_default_argument_77e4c5e_1` | proptest | `IffyDefaultArgument` | `witness_iffy_default_argument_case_falsy` |
-| 014 | `iffy_default_argument_77e4c5e_1` | quickcheck | `IffyDefaultArgument` | `witness_iffy_default_argument_case_falsy` |
-| 015 | `iffy_default_argument_77e4c5e_1` | crabcheck | `IffyDefaultArgument` | `witness_iffy_default_argument_case_falsy` |
-| 016 | `iffy_default_argument_77e4c5e_1` | hegel | `IffyDefaultArgument` | `witness_iffy_default_argument_case_falsy` |
-| 017 | `partition_by_extended_mapper_7729f8d_1` | proptest | `PartitionByExtendedMapper` | `witness_partition_by_extended_mapper_case_basic` |
-| 018 | `partition_by_extended_mapper_7729f8d_1` | quickcheck | `PartitionByExtendedMapper` | `witness_partition_by_extended_mapper_case_basic` |
-| 019 | `partition_by_extended_mapper_7729f8d_1` | crabcheck | `PartitionByExtendedMapper` | `witness_partition_by_extended_mapper_case_basic` |
-| 020 | `partition_by_extended_mapper_7729f8d_1` | hegel | `PartitionByExtendedMapper` | `witness_partition_by_extended_mapper_case_basic` |
-| 021 | `walk_values_defaultdict_factory_c245b04_1` | proptest | `WalkValuesDefaultdictFactory` | `witness_walk_values_defaultdict_factory_case_basic` |
-| 022 | `walk_values_defaultdict_factory_c245b04_1` | quickcheck | `WalkValuesDefaultdictFactory` | `witness_walk_values_defaultdict_factory_case_basic` |
-| 023 | `walk_values_defaultdict_factory_c245b04_1` | crabcheck | `WalkValuesDefaultdictFactory` | `witness_walk_values_defaultdict_factory_case_basic` |
-| 024 | `walk_values_defaultdict_factory_c245b04_1` | hegel | `WalkValuesDefaultdictFactory` | `witness_walk_values_defaultdict_factory_case_basic` |
-| 025 | `where_nonexistent_keys_e068b64_1` | proptest | `WhereNonexistentKeys` | `witness_where_nonexistent_keys_case_missing` |
-| 026 | `where_nonexistent_keys_e068b64_1` | quickcheck | `WhereNonexistentKeys` | `witness_where_nonexistent_keys_case_missing` |
-| 027 | `where_nonexistent_keys_e068b64_1` | crabcheck | `WhereNonexistentKeys` | `witness_where_nonexistent_keys_case_missing` |
-| 028 | `where_nonexistent_keys_e068b64_1` | hegel | `WhereNonexistentKeys` | `witness_where_nonexistent_keys_case_missing` |
+| 001 | `cache_mixed_args_592b6ea_1` | hypothesis | `CacheMixedArgs` | `witness_cache_mixed_args_case_basic` |
+| 002 | `cache_mixed_args_592b6ea_1` | crosshair | `CacheMixedArgs` | `witness_cache_mixed_args_case_basic` |
+| 003 | `empty_iterators_4a5e9df_1` | hypothesis | `EmptyOnIterators` | `witness_empty_on_iterators_case_basic` |
+| 004 | `empty_iterators_4a5e9df_1` | crosshair | `EmptyOnIterators` | `witness_empty_on_iterators_case_basic` |
+| 005 | `flatten_follow_argument_54ed07a_1` | hypothesis | `FlattenFollowArgument` | `witness_flatten_follow_argument_case_nested` |
+| 006 | `flatten_follow_argument_54ed07a_1` | crosshair | `FlattenFollowArgument` | `witness_flatten_follow_argument_case_nested` |
+| 007 | `iffy_default_argument_77e4c5e_1` | hypothesis | `IffyDefaultArgument` | `witness_iffy_default_argument_case_falsy` |
+| 008 | `iffy_default_argument_77e4c5e_1` | crosshair | `IffyDefaultArgument` | `witness_iffy_default_argument_case_falsy` |
+| 009 | `partition_by_extended_mapper_7729f8d_1` | hypothesis | `PartitionByExtendedMapper` | `witness_partition_by_extended_mapper_case_basic` |
+| 010 | `partition_by_extended_mapper_7729f8d_1` | crosshair | `PartitionByExtendedMapper` | `witness_partition_by_extended_mapper_case_basic` |
+| 011 | `walk_values_defaultdict_factory_c245b04_1` | hypothesis | `WalkValuesDefaultdictFactory` | `witness_walk_values_defaultdict_factory_case_basic` |
+| 012 | `walk_values_defaultdict_factory_c245b04_1` | crosshair | `WalkValuesDefaultdictFactory` | `witness_walk_values_defaultdict_factory_case_basic` |
+| 013 | `where_nonexistent_keys_e068b64_1` | hypothesis | `WhereNonexistentKeys` | `witness_where_nonexistent_keys_case_missing` |
+| 014 | `where_nonexistent_keys_e068b64_1` | crosshair | `WhereNonexistentKeys` | `witness_where_nonexistent_keys_case_missing` |
 
 ## Witness Catalog
 

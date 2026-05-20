@@ -30,15 +30,15 @@ Total mutations: 7
 
 ## Framework Coverage
 
-| Property | proptest | quickcheck | crabcheck | hegel |
-|----------|---------:|-----------:|----------:|------:|
-| `CacheMixedArgs` | ✓ | ✓ | ✓ | ✓ |
-| `EmptyOnIterators` | ✓ | ✓ | ✓ | ✓ |
-| `FlattenFollowArgument` | ✓ | ✓ | ✓ | ✓ |
-| `IffyDefaultArgument` | ✓ | ✓ | ✓ | ✓ |
-| `PartitionByExtendedMapper` | ✓ | ✓ | ✓ | ✓ |
-| `WalkValuesDefaultdictFactory` | ✓ | ✓ | ✓ | ✓ |
-| `WhereNonexistentKeys` | ✓ | ✓ | ✓ | ✓ |
+| Property | hypothesis | crosshair |
+|----------|---------:|--------:|
+| `CacheMixedArgs` | ✓ | ✓ |
+| `EmptyOnIterators` | ✓ | ✓ |
+| `FlattenFollowArgument` | ✓ | ✓ |
+| `IffyDefaultArgument` | ✓ | ✓ |
+| `PartitionByExtendedMapper` | ✓ | ✓ |
+| `WalkValuesDefaultdictFactory` | ✓ | ✓ |
+| `WhereNonexistentKeys` | ✓ | ✓ |
 
 ## Bug Details
 
